@@ -1,0 +1,11 @@
+reset;
+
+data dane.dat;
+model model.mod;
+
+
+option solver cplex;
+
+solve;
+
+display cost;
