@@ -1,11 +1,13 @@
 reset;
 
-data dane.dat;
-model model.mod;
 
+model model.mod;
+data dane.dat;
 
 option solver cplex;
 
+expand _slogcon;
 solve;
 
 display cost;
+display t;

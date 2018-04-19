@@ -1,20 +1,22 @@
 model;
 
-set MACHINES;
-set PARTS;
+param M;
+param N;
+param efficiency {1..M, 1..N};
 
-param efficiency {MACHINES, PARTS};	
-param R {MACHINES};
+param R {1..M};
+param C {1..N};
 
-var t {MACHINES} <= 180;
-var c {PARTS};
+var t {1..M};
+var c {1..N};
 
-minimize cost: sum {m in MACHINES} R[m] * t[m];
+minimize cost: sum {m in 1..M} R[m] * t[m];
 
-subject to c1: c[A] >= 60;
-subject to c2: c[B] >= 60;
-subject to c3: c[C] >= 60;
-subject to c4: c[D] >= 120;
-subject to c5: c[E] >= 120;
+s.t. c1: sum {m in 1..M} t[m] * efficiency[m,1] >= C[1];
+s.t. c2: sum {m in 1..M} t[m] * efficiency[m,2] >= C[2];
+s.t. c3: sum {m in 1..M} t[m] * efficiency[m,3] >= C[3];
+s.t. c4: sum {m in 1..M} t[m] * efficiency[m,4] >= C[4];
+s.t. c5: sum {m in 1..M} t[m] * efficiency[m,5] >= C[5];
 
-subject to t1: (sum {p in PARTS} (sum {m in MACHINES} t[m] * efficiency[m,p]));
+subject to t1 {m in 1..M}:
+  t[m] <= 180;
