@@ -11,3 +11,4 @@ solve;
 
 display cost;
 display t;
+display d;

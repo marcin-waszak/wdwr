@@ -1,20 +1,20 @@
 data;
 
-param M := 3;
-param N := 5;
+param M := 3; # liczba maszyn
+param N := 5; # liczba czesci
 
-param efficiency:
+param efficiency: # wydajnosc [szt / h]
 		1		2		3		4		5	:=
 	1	0.85	1.30	0.65	1.50	0.40
 	2	0.65	0.80	0.55	1.50	0.70
 	3	1.20	0.95	0.35	1.70	0.40;
 	
-param R :=	1 45
+param R :=	1 45 # koszty maszyn [pln / h]
 			2 35
 			3 40;
 
-param C :=	1 60
-			2 60
+param C :=	1 60 # minimalne ilosci
+			2 60 # wyprodukowanych czesci
 			3 60
 			4 120
 			5 120;
