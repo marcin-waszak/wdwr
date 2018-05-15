@@ -4,14 +4,15 @@ param M; # liczba maszyn
 param N; # liczba czesci
 param efficiency {1..M, 1..N}; # wydajnosc [szt / h]
 
-param R {1..M};	# koszty maszyn [pln / h]
+param R_exp {1..M};	# koszty maszyn [pln / h]
+param R {i in 1..10000, 1..M};
 param C {1..N};	# minimalne iloœci wypr. czesci
 
 var t_pri {1..M, 1..N};	# czas 100% wydajnosci [maszyna,czesc]
 var t_bis {1..M, 1..N};	# czas 90% wydajnosci [maszyna,czesc]
 var d {n in 1..N} = sum {m in 1..M} (t_pri[m,n] * efficiency[m,n] + t_bis[m,n] * 0.9 * efficiency[m,n]);
 
-minimize cost: sum {m in 1..M, n in 1..N} R[m] * (t_pri[m,n] + t_bis[m,n]);
+minimize cost: sum {m in 1..M, n in 1..N} R_exp[m] * (t_pri[m,n] + t_bis[m,n]);
 
 subject to c1 {n in 1..N}:
   d[n] >= C[n];
