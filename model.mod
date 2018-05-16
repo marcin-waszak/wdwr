@@ -2,20 +2,34 @@ model;
 
 param M; # liczba maszyn
 param N; # liczba czesci
-param efficiency {1..M, 1..N}; # wydajnosc [szt / h]
+param efficiency {1..M, 1..N}; # wydajnosc [szt/h]
 
-param R_exp {1..M};	# koszty maszyn [pln / h]
-param R {i in 1..10000, 1..M};
-param C {1..N};	# minimalne iloœci wypr. czesci
+param C {1..N};	# minimalne ilosci wypr. czesci
+param lambda; # wsp. awersji do ryzyka
+param R {i in 1..10000, 1..M}; # scenariusze kosztow maszyn
+param R_exp {1..M};		# wartosci oczekiwane kosztow maszyn [pln/h]
 
 var t_pri {1..M, 1..N};	# czas 100% wydajnosci [maszyna,czesc]
 var t_bis {1..M, 1..N};	# czas 90% wydajnosci [maszyna,czesc]
-var d {n in 1..N} = sum {m in 1..M} (t_pri[m,n] * efficiency[m,n] + t_bis[m,n] * 0.9 * efficiency[m,n]);
+var t_tot {m in 1..M} = sum {n in 1..N} (t_pri[m,n] + t_bis[m,n]);
+var c {n in 1..N} = sum {m in 1..M} efficiency[m,n] * (t_pri[m,n] + t_bis[m,n] * 0.9);
 
-minimize cost: sum {m in 1..M, n in 1..N} R_exp[m] * (t_pri[m,n] + t_bis[m,n]);
+# 1. model
+#minimize cost: sum {m in 1..M} R_exp[m] * t_tot[m];
 
+# 2. model
+param R_exp2 {m in 1..M} = (sum {i in 1..10000} R[i,m]) / 10000;
+var d; # kryterium ryzyka
+var total_cost = sum {m in 1..M} R_exp2[m] * t_tot[m]; # kryterium kosztu
+
+minimize mod2: total_cost + lambda * d;
+
+subject to lad1 {i in 1..10000} : d >= sum {m in 1..M} (R_exp2[m] - R[i,m]) * t_tot[m];
+subject to lad2 {i in 1..10000} : d >= sum {m in 1..M} (R[i,m] - R_exp2[m]) * t_tot[m];
+
+# czesc wspolna
 subject to c1 {n in 1..N}:
-  d[n] >= C[n];
+  c[n] >= C[n];
 
 subject to t1 {m in 1..M}:
   sum {n in 1..N} (t_pri[m,n] + t_bis[m,n]) <= 180;

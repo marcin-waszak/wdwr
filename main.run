@@ -7,7 +7,11 @@ option solver cplex;
 
 solve;
 
-display cost;
+#display cost;
 display t_pri;
 display t_bis;
-display d;
+display t_tot;
+display c;
+
+display R_exp2;
+display total_cost;
