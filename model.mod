@@ -18,14 +18,13 @@ var c {n in 1..N} = sum {m in 1..M} efficiency[m,n] * (t_pri[m,n] + t_bis[m,n] *
 #minimize cost: sum {m in 1..M} R_exp[m] * t_tot[m];
 
 # 2. model
-param R_exp2 {m in 1..M} = (sum {i in 1..10000} R[i,m]) / 10000;
 var d; # kryterium ryzyka
-var total_cost = sum {m in 1..M} R_exp2[m] * t_tot[m]; # kryterium kosztu
+var total_cost = sum {m in 1..M} R_exp[m] * t_tot[m]; # kryterium kosztu
 
 minimize mod2: total_cost + lambda * d;
 
-subject to lad1 {i in 1..10000} : d >= sum {m in 1..M} (R_exp2[m] - R[i,m]) * t_tot[m];
-subject to lad2 {i in 1..10000} : d >= sum {m in 1..M} (R[i,m] - R_exp2[m]) * t_tot[m];
+subject to lad1 {i in 1..10000} : d >= sum {m in 1..M} (R_exp[m] - R[i,m]) * t_tot[m];
+subject to lad2 {i in 1..10000} : d >= sum {m in 1..M} (R[i,m] - R_exp[m]) * t_tot[m];
 
 # czesc wspolna
 subject to c1 {n in 1..N}:

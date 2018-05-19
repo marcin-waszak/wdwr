@@ -13,5 +13,4 @@ display t_bis;
 display t_tot;
 display c;
 
-display R_exp2;
 display total_cost;
