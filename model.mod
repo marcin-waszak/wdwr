@@ -10,6 +10,7 @@ param C {1..N};	# minimalne ilosci wypr. czesci
 param R {i in 1..10000, 1..M}; # scenariusze kosztow maszyn
 param R_exp {1..M};		# wartosci oczekiwane kosztow maszyn [pln/h]
 
+var u {1..M} binary;
 var t_pri {1..M, 1..N};	# czas 100% wydajnosci [maszyna,czesc]
 var t_bis {1..M, 1..N};	# czas 90% wydajnosci [maszyna,czesc]
 var t_tot {m in 1..M} = sum {n in 1..N} (t_pri[m,n] + t_bis[m,n]);
@@ -41,3 +42,9 @@ subject to t3 {m in 1..M, n in 1..N}:
 
 subject to t4 {m in 1..M}:
   sum {n in 1..N} t_pri[m,n] <= 100;
+
+subject to t5 {m in 1..M}:
+  sum {n in 1..N} t_pri[m,n] >= 100 * u[m];
+
+subject to t6 {m in 1..M}:
+  sum {n in 1..N} t_bis[m,n] <= 180 * u[m];

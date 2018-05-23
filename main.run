@@ -10,6 +10,10 @@ for {i in 30..30}
 	let max_cost := 18600 - i*25;
 	solve;
 
+	display t_pri;
+	display t_bis;
+	display u;
+
 	if match (solve_message, "optimal solution") = 0 then
 		break;
 
