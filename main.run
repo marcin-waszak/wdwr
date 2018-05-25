@@ -5,17 +5,18 @@ data dane.dat;
 
 option solver cplex;
 
-for {i in 30..30}
+for {i in 0..45}
 {
 	let max_cost := 18600 - i*25;
 	solve;
 
-	display t_pri;
-	display t_bis;
+	display total_cost;
+	display t_tot2;
+	#display t_bis;
 	display u;
 
-	if match (solve_message, "optimal solution") = 0 then
+	if match (solve_message, "optimal integer solution") = 0 then
 		break;
 
-	printf "%f\t%f\t%f\t%f\t%f\t%f\n", max_cost, total_cost, d, t_tot[1], t_tot[2], t_tot[3] > out3.txt;
+	printf "%f\t%f\t%f\t%f\t%f\t%f\n", max_cost, total_cost, d, t_tot[1], t_tot[2], t_tot[3] > outX.txt;
 }

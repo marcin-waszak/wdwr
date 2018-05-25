@@ -14,6 +14,7 @@ var u {1..M} binary;
 var t_pri {1..M, 1..N};	# czas 100% wydajnosci [maszyna,czesc]
 var t_bis {1..M, 1..N};	# czas 90% wydajnosci [maszyna,czesc]
 var t_tot {m in 1..M} = sum {n in 1..N} (t_pri[m,n] + t_bis[m,n]);
+var t_tot2 {m in 1..M, n in 1..N} = t_pri[m,n] + t_bis[m,n];
 var c {n in 1..N} = sum {m in 1..M} efficiency[m,n] * (t_pri[m,n] + t_bis[m,n] * 0.9);
 
 var d; # kryterium ryzyka
